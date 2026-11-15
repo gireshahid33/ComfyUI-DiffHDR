@@ -1,0 +1,193 @@
+{
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "wan2.1_vace_14B_fp16.safetensors",
+   "weight_dtype": "fp8_e4m3fn"
+  }
+ },
+ "2": {
+  "class_type": "DiffHDRLoraLoader",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ],
+   "lora_name": "DiffHDR.safetensors",
+   "strength": 1.0
+  }
+ },
+ "3": {
+  "class_type": "ModelSamplingSD3",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "shift": 5.0
+  }
+ },
+ "4": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+   "type": "wan",
+   "device": "default"
+  }
+ },
+ "5": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "text": ""
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "4",
+    0
+   ],
+   "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+  }
+ },
+ "7": {
+  "class_type": "DiffHDRVAELoader",
+  "inputs": {
+   "vae_name": "wan_2.1_vae.safetensors",
+   "precision": "fp32"
+  }
+ },
+ "8": {
+  "class_type": "VHS_LoadVideo",
+  "inputs": {
+   "video": "your_clip.mp4",
+   "force_rate": 0,
+   "custom_width": 0,
+   "custom_height": 0,
+   "frame_load_cap": 33,
+   "skip_first_frames": 0,
+   "select_every_nth": 1,
+   "format": "AnimateDiff"
+  }
+ },
+ "9": {
+  "class_type": "DiffHDRVideoSampler",
+  "inputs": {
+   "model": [
+    "3",
+    0
+   ],
+   "positive": [
+    "5",
+    0
+   ],
+   "negative": [
+    "6",
+    0
+   ],
+   "vae": [
+    "7",
+    0
+   ],
+   "images": [
+    "8",
+    0
+   ],
+   "input_transfer": "sRGB (display-referred LDR)",
+   "width": 1280,
+   "height": 720,
+   "window_size": 33,
+   "window_stride": 16,
+   "use_prev_window_reference": true,
+   "steps": 10,
+   "seed": 10,
+   "cfg": 1.0,
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "vace_strength": 1.0,
+   "over_threshold": 0.95,
+   "under_threshold": 0.01,
+   "use_under_exposure_mask": false,
+   "decode": "fast (fp32, 768px tiles)",
+   "reference_ev": 5.0
+  }
+ },
+ "10": {
+  "class_type": "DiffHDRSaveEXR",
+  "inputs": {
+   "images": [
+    "9",
+    0
+   ],
+   "folder": "DiffHDR/shot",
+   "filename_prefix": "diffhdr",
+   "start_frame": 1001,
+   "bit_depth": "half",
+   "compression": "ZIP",
+   "overwrite": true
+  }
+ },
+ "11": {
+  "class_type": "DiffHDRPreview",
+  "inputs": {
+   "hdr_linear": [
+    "9",
+    0
+   ],
+   "exposure": -3.0,
+   "tonemap": "clip"
+  }
+ },
+ "12": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "images": [
+    "11",
+    0
+   ],
+   "frame_rate": 30,
+   "loop_count": 0,
+   "filename_prefix": "DiffHDR/preview_minus3EV",
+   "format": "video/h264-mp4",
+   "pix_fmt": "yuv420p",
+   "crf": 19,
+   "save_metadata": false,
+   "trim_to_audio": false,
+   "pingpong": false,
+   "save_output": true
+  }
+ },
+ "13": {
+  "class_type": "MaskToImage",
+  "inputs": {
+   "mask": [
+    "9",
+    1
+   ]
+  }
+ },
+ "14": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "images": [
+    "13",
+    0
+   ],
+   "frame_rate": 30,
+   "loop_count": 0,
+   "filename_prefix": "DiffHDR/preview_mask",
+   "format": "video/h264-mp4",
+   "pix_fmt": "yuv420p",
+   "crf": 19,
+   "save_metadata": false,
+   "trim_to_audio": false,
+   "pingpong": false,
+   "save_output": true
+  }
+ }
+}

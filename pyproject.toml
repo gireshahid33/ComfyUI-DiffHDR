@@ -1,0 +1,19 @@
+[project]
+name = "comfyui-diffhdr"
+description = "DiffHDR for ComfyUI: turn 8-bit LDR video into scene-linear HDR EXR sequences with Wan2.1-VACE-14B (rebuilds blown-out highlights). Sliding windows for any clip length, fp32 tiled VAE, EXR writer."
+version = "1.0.0"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = ["OpenEXR>=3.2"]
+classifiers = ["Operating System :: OS Independent"]
+
+[project.urls]
+Repository = "https://github.com/gireshahid33/ComfyUI-DiffHDR"
+Documentation = "https://github.com/gireshahid33/ComfyUI-DiffHDR#readme"
+"Bug Tracker" = "https://github.com/gireshahid33/ComfyUI-DiffHDR/issues"
+
+[tool.comfy]
+# Fill in your Comfy Registry publisher ID (registry.comfy.org) before running `comfy node publish`.
+PublisherId = ""
+DisplayName = "ComfyUI-DiffHDR"
+Icon = ""

@@ -1,0 +1,15 @@
+ComfyUI-DiffHDR
+Copyright 2026 VFX SHOWDOWN (www.vfxshowdown.com)
+
+This product includes software derived from DiffHDR
+(https://github.com/Eyeline-Labs/DiffHDR), Copyright Eyeline Labs,
+licensed under the Apache License, Version 2.0.
+
+diffhdr_color.py contains functions adapted from DiffHDR's utils/color_utils.py,
+infer_video.py and infer_long_video.py (restructured for ComfyUI tensors; numerically
+identical results). diffhdr_nodes.py re-implements DiffHDR's inference pipeline on top
+of ComfyUI.
+
+This repository does not include any model weights. The DiffHDR LoRA weights
+(Eyeline-Labs/DiffHDR) and the Wan2.1-VACE-14B weights (Wan-AI) are distributed by
+their authors under their own licences (Apache-2.0 at the time of writing).

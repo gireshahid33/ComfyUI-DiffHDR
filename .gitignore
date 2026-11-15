@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*.safetensors
+*.exr
+*.mp4
+.DS_Store
+.vscode/
+.idea/
